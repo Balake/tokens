@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Expandable Textarea with Button</title>
+    <style>
+      textarea {
+        width: 100%;
+        min-height: 50px;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+        resize: none;
+        overflow: hidden;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <textarea id="myTextarea" placeholder="Start typing..."></textarea>
+      <button id="createButton">Create Modified Textarea</button>
+      <div id="outputContainer"></div>
+    </div>
+
+    <script>
+      function autoResize(textarea) {
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
+      }
+
+      const originalTextarea = document.getElementById("myTextarea");
+      originalTextarea.addEventListener("input", () =>
+        autoResize(originalTextarea),
+      );
+      autoResize(originalTextarea); // Auto-resize on load
+
+      document.getElementById("createButton").addEventListener("click", () => {
+        const content = originalTextarea.value;
+
+        // Modify content — change this to whatever transformation you want
+        const modifiedContent = content
+          .split("\n")
+          .map(
+            (t) =>
+              `1x t:${t
+                .split(" ")
+                .slice(0, t.split(" ").length - 1)
+                .join(" ")}`,
+          )
+          .join("\n");
+
+        const newTextarea = document.createElement("textarea");
+        newTextarea.value = modifiedContent;
+
+        // Apply the same styles + functionality
+        newTextarea.style.width = "100%";
+        newTextarea.style.padding = "8px";
+        newTextarea.style.marginBottom = "10px";
+        newTextarea.style.boxSizing = "border-box";
+        newTextarea.style.resize = "none";
+        newTextarea.style.overflow = "hidden";
+
+        // Add input listener for future typing
+        newTextarea.addEventListener("input", () => autoResize(newTextarea));
+
+        // Append and resize after it's in the DOM
+        document.getElementById("outputContainer").appendChild(newTextarea);
+        autoResize(newTextarea);
+      });
+    </script>
+  </body>
+</html>
