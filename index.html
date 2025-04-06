@@ -23,7 +23,7 @@
   <body>
     <div class="container">
       <textarea id="myTextarea" placeholder="Start typing..."></textarea>
-      <button id="createButton">Create Modified Textarea</button>
+      <button id="createButton">Get tokens</button>
       <div id="outputContainer"></div>
     </div>
 
@@ -39,6 +39,8 @@
       );
       autoResize(originalTextarea); // Auto-resize on load
 
+      let modifiedTextarea = null;
+
       document.getElementById("createButton").addEventListener("click", () => {
         const content = originalTextarea.value;
 
@@ -53,24 +55,29 @@
                 .join(" ")}`,
           )
           .join("\n");
+        if (!modifiedTextarea) {
+          modifiedTextarea = document.createElement("textarea");
 
-        const newTextarea = document.createElement("textarea");
-        newTextarea.value = modifiedContent;
+          // Apply the same styles + functionality
+          modifiedTextarea.style.width = "100%";
+          modifiedTextarea.style.padding = "8px";
+          modifiedTextarea.style.marginBottom = "10px";
+          modifiedTextarea.style.boxSizing = "border-box";
+          modifiedTextarea.style.resize = "none";
+          modifiedTextarea.style.overflow = "hidden";
 
-        // Apply the same styles + functionality
-        newTextarea.style.width = "100%";
-        newTextarea.style.padding = "8px";
-        newTextarea.style.marginBottom = "10px";
-        newTextarea.style.boxSizing = "border-box";
-        newTextarea.style.resize = "none";
-        newTextarea.style.overflow = "hidden";
+          // Add input listener for future typing
+          modifiedTextarea.addEventListener("input", () =>
+            autoResize(newTextarea),
+          );
 
-        // Add input listener for future typing
-        newTextarea.addEventListener("input", () => autoResize(newTextarea));
-
-        // Append and resize after it's in the DOM
-        document.getElementById("outputContainer").appendChild(newTextarea);
-        autoResize(newTextarea);
+          // Append and resize after it's in the DOM
+          document
+            .getElementById("outputContainer")
+            .appendChild(modifiedTextarea);
+        }
+        modifiedTextarea.value = modifiedContent;
+        autoResize(modifiedTextarea);
       });
     </script>
   </body>
