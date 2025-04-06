@@ -22,7 +22,10 @@
   </head>
   <body>
     <div class="container">
-      <textarea id="myTextarea" placeholder="Start typing..."></textarea>
+      <textarea
+        id="myTextarea"
+        placeholder="Paste token export from moxfield here"
+      ></textarea>
       <button id="createButton">Get tokens</button>
       <div id="outputContainer"></div>
     </div>
@@ -77,7 +80,7 @@
             .appendChild(modifiedTextarea);
         }
         modifiedTextarea.value = modifiedContent;
-        autoResize(modifiedTextarea);
+        setTimeout(() => autoResize(modifiedTextarea), 0);
       });
     </script>
   </body>
